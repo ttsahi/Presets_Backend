@@ -3,10 +3,17 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           controllers.Assets.at(path="/public", file="/Presets_Frontend/app/index.html")
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /*file                      controllers.Assets.at(path="/public/Presets_Frontend/app", file)
 
+# Sockets controller
+GET     /api/sockets/add        @controllers.api.SocketsController.add()
 
-GET     /api/main       controllers.MainController.index()
+# Distribution controller
+GET     /api/distribution/start     @controllers.api.DistributionController.start()
+
+GET     /api/distribution/stop     @controllers.api.DistributionController.stop()
+
