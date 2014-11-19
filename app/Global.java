@@ -15,7 +15,7 @@ import services.*;
 
 public class Global extends GlobalSettings {
 
-    private static final int NUMBER_OF_TRACKS = 20;
+    private static final int NUMBER_OF_TRACKS = 500;
     private static final TracksRepository tracksRepository = new TracksRepository(NUMBER_OF_TRACKS);
     private static final SocketsManager socketsManager = new SocketsManager();
     private static final LocationGenerator locationGenerator = new LocationGenerator();
@@ -43,7 +43,7 @@ public class Global extends GlobalSettings {
                 bind(ISocketsManager.class).toInstance(socketsManager);
                 bind(ILocationGenerator.class).toInstance(locationGenerator);
 
-                DistributionService.CHUNKS_SIZE = 50;
+                DistributionService.CHUNKS_SIZE = 500;
                 bind(IDistributionService.class).to(DistributionService.class).in(Singleton.class);
             }
         });

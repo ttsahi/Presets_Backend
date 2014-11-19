@@ -7,7 +7,7 @@ import play.libs.Json;
 import scala.concurrent.duration.Duration;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.inject.Inject;
@@ -26,7 +26,7 @@ public class DistributionService implements IDistributionService {
     private final ITracksRepository _tracksRepository;
     private final ILocationGenerator _locationGenerator;
 
-    public static int CHUNKS_SIZE = 50;
+    public static int CHUNKS_SIZE = 500;
 
     @Inject
     public DistributionService(ISocketsManager socketsManager,
@@ -50,11 +50,10 @@ public class DistributionService implements IDistributionService {
                 Duration.create(500, TimeUnit.MILLISECONDS),
                 (Runnable) () -> {
 
-                    Iterator<ITrack> tracks = this._tracksRepository.getAll().iterator();
+                    Collection<ITrack> tracks = this._tracksRepository.getAll();
                     List<ITrack> chunk = new ArrayList<>(CHUNKS_SIZE);
 
-                    ITrack track = null;
-                    while ((track = tracks.next()) != null){
+                    tracks.forEach(track -> {
                         track.setLocation(this._locationGenerator.generate());
                         chunk.add(track);
 
@@ -62,7 +61,7 @@ public class DistributionService implements IDistributionService {
                             this._socketsManager.notifyAll(Json.toJson(chunk));
                             chunk.clear();
                         }
-                    }
+                    });
 
                     if(chunk.size() > 0){
                         this._socketsManager.notifyAll(Json.toJson(chunk));
