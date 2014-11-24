@@ -3,7 +3,7 @@ package controllers.api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import play.mvc.*;
-import services.ISocketsManager;
+import services.pub.ISocketsManager;
 
 /**
  * Created by tzachit on 17/11/14.

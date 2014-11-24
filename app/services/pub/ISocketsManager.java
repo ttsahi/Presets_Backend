@@ -1,4 +1,4 @@
-package services;
+package services.pub;
 
 import play.mvc.WebSocket;
 

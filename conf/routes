@@ -5,6 +5,9 @@
 # Home page
 GET     /                           controllers.Assets.at(path="/public", file="/Presets_Frontend/app/index.html")
 
+# Index controller
+GET     /api/index        @controllers.api.IndexController.index()
+
 # Sockets controller
 GET     /api/sockets/add        @controllers.api.SocketsController.add()
 

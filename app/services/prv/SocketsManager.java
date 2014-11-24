@@ -1,7 +1,8 @@
-package services;
+package services.prv;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import play.mvc.WebSocket.Out;
+import services.pub.ISocketsManager;
 
 /**
  * Created by tzachit on 17/11/14.

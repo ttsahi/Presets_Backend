@@ -1,6 +1,7 @@
-package data;
+package data.prv.repositories;
 
-import data.entities.ITrack;
+import data.pub.entities.ITrack;
+import data.pub.reposotories.ITracksRepository;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;

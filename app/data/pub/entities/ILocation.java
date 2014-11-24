@@ -1,4 +1,4 @@
-package data.entities;
+package data.pub.entities;
 
 /**
  * Created by tzachit on 17/11/14.

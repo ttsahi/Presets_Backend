@@ -1,7 +1,7 @@
-package services;
+package services.prv;
 
 import akka.actor.Cancellable;
-import data.entities.ITrack;
+import data.pub.entities.ITrack;
 import play.libs.Akka;
 import play.libs.Json;
 import scala.concurrent.duration.Duration;
@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.inject.Inject;
 
-import data.ITracksRepository;
+import data.pub.reposotories.ITracksRepository;
+import services.pub.IDistributionService;
+import services.pub.ILocationGenerator;
+import services.pub.ISocketsManager;
 
 /**
  * Created by tzachit on 17/11/14.

@@ -1,6 +1,6 @@
-package data;
+package data.pub.reposotories;
 
-import data.entities.ITrack;
+import data.pub.entities.ITrack;
 
 import java.util.Collection;
 

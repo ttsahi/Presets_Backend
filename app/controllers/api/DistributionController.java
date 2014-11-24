@@ -3,7 +3,7 @@ package controllers.api;
 import com.google.inject.Inject;
 import play.mvc.Controller;
 import play.mvc.*;
-import services.IDistributionService;
+import services.pub.IDistributionService;
 
 /**
  * Created by tzachit on 17/11/14.

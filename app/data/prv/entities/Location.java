@@ -1,25 +1,27 @@
-package data.entities;
+package data.prv.entities;
+
+import data.pub.entities.ILocation;
 
 /**
  * Created by tzachit on 17/11/14.
  */
 public class Location implements ILocation {
 
-    private double _lat;
-    private double _lon;
+    private double lat;
+    private double lon;
 
     public Location(){
         this(0,0);
     }
 
     public Location(double lat, double lon){
-        this._lat = lat;
-        this._lon = lon;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     @Override
     public double getLat() {
-        return this._lat;
+        return this.lat;
     }
 
     @Override
@@ -28,13 +30,13 @@ public class Location implements ILocation {
             return false;
         }
 
-        this._lat = lat;
+        this.lat = lat;
         return true;
     }
 
     @Override
     public double getLon() {
-        return this._lon;
+        return this.lon;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class Location implements ILocation {
             return false;
         }
 
-        this._lon = lon;
+        this.lon = lon;
         return true;
     }
 }

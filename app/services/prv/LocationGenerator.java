@@ -1,7 +1,8 @@
-package services;
+package services.prv;
 
-import data.entities.ILocation;
-import data.entities.Location;
+import data.pub.entities.ILocation;
+import data.prv.entities.Location;
+import services.pub.ILocationGenerator;
 
 import java.util.Random;
 
