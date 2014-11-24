@@ -6,7 +6,7 @@ import data.pub.entities.IWorkspace;
 import data.pub.reposotories.IWorkspacesRepository;
 import models.input.AddWorkspaceIModel;
 import models.input.UpdateWorkspaceIModel;
-import models.output.AddWorkspaceOModel;
+import models.output.AddOModel;
 import models.output.WorkspaceBaseOModel;
 import play.data.Form;
 import play.libs.Json;
@@ -92,7 +92,7 @@ public class WorkspacesController extends Controller {
                 return badRequest(Json.toJson(new String[]{"Server error!", "Can't add!"}));
             }
 
-            return ok(Json.toJson(new AddWorkspaceOModel(workspaceId)));
+            return ok(Json.toJson(new AddOModel(workspaceId)));
 
         }catch (Exception e){
             return badRequest(Json.toJson(new String[]{"Server error!"}));

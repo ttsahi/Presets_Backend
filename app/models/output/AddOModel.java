@@ -3,13 +3,13 @@ package models.output;
 /**
  * Created by tzachit on 24/11/14.
  */
-public class AddWorkspaceOModel {
+public class AddOModel {
 
     private String id;
 
-    public AddWorkspaceOModel(){}
+    public AddOModel(){}
 
-    public AddWorkspaceOModel(String id){
+    public AddOModel(String id){
         this.id = id;
     }
 

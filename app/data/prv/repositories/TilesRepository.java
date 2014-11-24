@@ -60,7 +60,7 @@ public class TilesRepository implements ITilesRepository {
     @Override
     public String addFile(String workspaceId, String path, int position) {
 
-        if(position > Workspace.MAX_TILES){
+        if(path == null || position < 1 || position > Workspace.MAX_TILES){
             return null;
         }
 
@@ -75,7 +75,7 @@ public class TilesRepository implements ITilesRepository {
     @Override
     public String addWebPage(String workspaceId, String url, int position) {
 
-        if(position > Workspace.MAX_TILES){
+        if(url == null || position < 1 || position > Workspace.MAX_TILES){
             return null;
         }
 
@@ -94,7 +94,7 @@ public class TilesRepository implements ITilesRepository {
                 .findOne("{_id: #}", new ObjectId(workspaceId))
                 .as(Workspace.class);
 
-        if(workspace == null || position > Workspace.MAX_TILES){
+        if(workspace == null || position < 1 || position > Workspace.MAX_TILES){
             return null;
         }
 
@@ -115,7 +115,7 @@ public class TilesRepository implements ITilesRepository {
     @Override
     public String addMap(String workspaceId, String name, int position) {
 
-        if(position > Workspace.MAX_TILES){
+        if(name == null || position < 1 || position > Workspace.MAX_TILES){
             return null;
         }
 
@@ -138,8 +138,8 @@ public class TilesRepository implements ITilesRepository {
         }
 
         if(path == null && position != null){
-            if(position > Workspace.MAX_TILES){
-                return  false;
+            if(position < 1 || position > Workspace.MAX_TILES){
+                return false;
             }
 
             return this.collection
@@ -150,8 +150,8 @@ public class TilesRepository implements ITilesRepository {
         }
 
         if(path != null){
-            if(position > Workspace.MAX_TILES){
-                return  false;
+            if(position < 1 || position > Workspace.MAX_TILES){
+                return false;
             }
 
             return this.collection
@@ -175,8 +175,8 @@ public class TilesRepository implements ITilesRepository {
         }
 
         if(url == null && position != null){
-            if(position > Workspace.MAX_TILES){
-                return  false;
+            if(position < 1 || position > Workspace.MAX_TILES){
+                return false;
             }
 
             return this.collection
@@ -187,8 +187,8 @@ public class TilesRepository implements ITilesRepository {
         }
 
         if(url != null){
-            if(position > Workspace.MAX_TILES){
-                return  false;
+            if(position < 1 || position > Workspace.MAX_TILES){
+                return false;
             }
 
             return this.collection
@@ -220,7 +220,7 @@ public class TilesRepository implements ITilesRepository {
                     .getN() != 0;
         }
 
-        if (position > Workspace.MAX_TILES) {
+        if(position < 1 || position > Workspace.MAX_TILES){
             return false;
         }
 
@@ -243,8 +243,8 @@ public class TilesRepository implements ITilesRepository {
         }
 
         if(name == null && position != null){
-            if(position > Workspace.MAX_TILES){
-                return  false;
+            if(position < 1 || position > Workspace.MAX_TILES){
+                return false;
             }
 
             return this.collection
@@ -255,8 +255,8 @@ public class TilesRepository implements ITilesRepository {
         }
 
         if(name != null){
-            if(position > Workspace.MAX_TILES){
-                return  false;
+            if(position < 1 || position > Workspace.MAX_TILES){
+                return false;
             }
 
             return this.collection
@@ -273,7 +273,7 @@ public class TilesRepository implements ITilesRepository {
     public boolean remove(String workspaceId, String tileId) {
 
         return this.collection
-                .update("{_id: #", new ObjectId(workspaceId))
+                .update(new ObjectId(workspaceId))
                 .with("{$pull: {tiles: {id: #}}}", new ObjectId(tileId))
                 .getN() != 0;
     }
