@@ -128,35 +128,145 @@ public class TilesRepository implements ITilesRepository {
     }
 
     @Override
-    public boolean update(String workspaceId, ITile tile) {
+    public boolean updateFile(String workspaceId, String tileId, String path, Integer position) {
+
+        if(path != null && position == null){
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #}", new ObjectId(workspaceId), new ObjectId(tileId))
+                    .with("{$set: {'tiles.$.path': #}}", path)
+                    .getN() != 0;
+        }
+
+        if(path == null && position != null){
+            if(position > Workspace.MAX_TILES){
+                return  false;
+            }
+
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
+                            new ObjectId(workspaceId), new ObjectId(tileId), position)
+                    .with("{$set: {'tiles.$.position': #}}", position)
+                    .getN() != 0;
+        }
+
+        if(path != null){
+            if(position > Workspace.MAX_TILES){
+                return  false;
+            }
+
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
+                            new ObjectId(workspaceId), new ObjectId(tileId), position)
+                    .with("{$set: {'tiles.$.path': #, 'tiles.$.position': #}}", path, position)
+                    .getN() != 0;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateWebPage(String workspaceId, String tileId, String url, Integer position) {
+
+        if(url != null && position == null){
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #}", new ObjectId(workspaceId), new ObjectId(tileId))
+                    .with("{$set: {'tiles.$.url': #}}", url)
+                    .getN() != 0;
+        }
+
+        if(url == null && position != null){
+            if(position > Workspace.MAX_TILES){
+                return  false;
+            }
+
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
+                            new ObjectId(workspaceId), new ObjectId(tileId), position)
+                    .with("{$set: {'tiles.$.position': #}}", position)
+                    .getN() != 0;
+        }
+
+        if(url != null){
+            if(position > Workspace.MAX_TILES){
+                return  false;
+            }
+
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
+                            new ObjectId(workspaceId), new ObjectId(tileId), position)
+                    .with("{$set: {'tiles.$.url': #, 'tiles.$.position': #}}", url, position)
+                    .getN() != 0;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateWorkspaceDescriptor(String workspaceId, String tileId, Integer position) {
 
         Workspace workspace = this.collection
                 .findOne("{_id: #}", new ObjectId(workspaceId))
                 .as(Workspace.class);
 
-        if(workspace == null || workspace.getTiles() == null){
+        if (workspace == null) {
             return false;
         }
 
-        ITile t = workspace.getTiles().get(0);
+        if (position == null) {
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #}", new ObjectId(workspaceId), new ObjectId(tileId))
+                    .with("{$set: {'tiles.$.name': #, 'tiles.$.description': #, 'tiles.$.modified': #, 'tiles.$.expired': #}}",
+                            workspace.getName(), workspace.getDescription(), workspace.getModified(), workspace.getExpired())
+                    .getN() != 0;
+        }
 
-        if(t.getPosition() != tile.getPosition()){
+        if (position > Workspace.MAX_TILES) {
+            return false;
+        }
 
-            if(tile.getPosition() > Workspace.MAX_TILES){
-                return false;
+        return this.collection
+                .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
+                        new ObjectId(workspaceId), new ObjectId(tileId), position)
+                .with("{$set: {'tiles.$.name': #, 'tiles.$.description': #, 'tiles.$.modified': #, 'tiles.$.expired': #, 'tiles.$.position': #}}",
+                        workspace.getName(), workspace.getDescription(), workspace.getModified(), workspace.getExpired(), position)
+                .getN() != 0;
+    }
+
+    @Override
+    public boolean updateMap(String workspaceId, String tileId, String name, Integer position) {
+
+        if(name != null && position == null){
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #}", new ObjectId(workspaceId), new ObjectId(tileId))
+                    .with("{$set: {'tiles.$.name': #}}", name)
+                    .getN() != 0;
+        }
+
+        if(name == null && position != null){
+            if(position > Workspace.MAX_TILES){
+                return  false;
             }
 
             return this.collection
                     .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
-                            new ObjectId(workspaceId), new ObjectId(tile.getId()), tile.getPosition())
-                    .with("{$set: {'tiles.$': #}}", tile)
+                            new ObjectId(workspaceId), new ObjectId(tileId), position)
+                    .with("{$set: {'tiles.$.position': #}}", position)
                     .getN() != 0;
         }
 
-        return this.collection
-                .update("{_id: #, 'tiles.id': #}", new ObjectId(workspaceId), new ObjectId(tile.getId()))
-                .with("{$set: {'tiles.$': #}}", tile)
-                .getN() != 0;
+        if(name != null){
+            if(position > Workspace.MAX_TILES){
+                return  false;
+            }
+
+            return this.collection
+                    .update("{_id: #, 'tiles.id': #, 'tiles.position': {$ne: #}}",
+                            new ObjectId(workspaceId), new ObjectId(tileId), position)
+                    .with("{$set: {'tiles.$.name': #, 'tiles.$.position': #}}", name, position)
+                    .getN() != 0;
+        }
+
+        return false;
     }
 
     @Override
