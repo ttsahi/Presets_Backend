@@ -58,65 +58,73 @@ public class TilesRepository implements ITilesRepository {
     }
 
     @Override
-    public boolean addFile(String workspaceId, String path, int position) {
+    public String addFile(String workspaceId, String path, int position) {
 
         if(position > Workspace.MAX_TILES){
-            return false;
+            return null;
         }
+
+        File file = new File(path, position);
 
         return this.collection
                 .update("{_id: #, 'tiles.position': {$ne: #}}", new ObjectId(workspaceId), position)
-                .with("{$push: {tiles: #}}", new File(path, position))
-                .getN() != 0;
+                .with("{$push: {tiles: #}}", file)
+                .getN() != 0 ? file.getId() : null;
     }
 
     @Override
-    public boolean addWebPage(String workspaceId, String url, int position) {
+    public String addWebPage(String workspaceId, String url, int position) {
 
         if(position > Workspace.MAX_TILES){
-            return false;
+            return null;
         }
+
+        WebPage webPage = new WebPage(url, position);
 
         return this.collection
                 .update("{_id: #, 'tiles.position': {$ne: #}}", new ObjectId(workspaceId), position)
-                .with("{$push: {tiles: #}}",  new WebPage(url, position))
-                .getN() != 0;
+                .with("{$push: {tiles: #}}",  webPage)
+                .getN() != 0 ? webPage.getId() : null;
     }
 
     @Override
-    public boolean addWorkspaceDescriptor(String workspaceId, int position) {
+    public String addWorkspaceDescriptor(String workspaceId, int position) {
 
         Workspace workspace = this.collection
                 .findOne("{_id: #}", new ObjectId(workspaceId))
                 .as(Workspace.class);
 
         if(workspace == null || position > Workspace.MAX_TILES){
-            return false;
+            return null;
         }
+
+        WorkspaceDescriptor workspaceDescriptor = new WorkspaceDescriptor(
+                workspace.getName(),
+                workspace.getDescription(),
+                workspace.getModified(),
+                workspace.getExpired(),
+                position
+        );
 
         return this.collection
                 .update("{_id: #, 'tiles.position': {$ne: #}}", new ObjectId(workspaceId), position)
-                .with("{$push: {tiles: #}}",  new WorkspaceDescriptor(
-                        workspace.getName(),
-                        workspace.getDescription(),
-                        workspace.getModified(),
-                        workspace.getExpired(),
-                        position
-                ))
-                .getN() != 0;
+                .with("{$push: {tiles: #}}", workspaceDescriptor)
+                .getN() != 0 ? workspaceDescriptor.getId() : null;
     }
 
     @Override
-    public boolean addMap(String workspaceId, String name, int position) {
+    public String addMap(String workspaceId, String name, int position) {
 
         if(position > Workspace.MAX_TILES){
-            return false;
+            return null;
         }
+
+        Map map = new Map(name, position);
 
         return this.collection
                 .update("{_id: #, 'tiles.position': {$ne: #}}", new ObjectId(workspaceId), position)
-                .with("{$push: {tiles: #}}",  new Map(name, position))
-                .getN() != 0;
+                .with("{$push: {tiles: #}}",  map)
+                .getN() != 0 ? map.getId() : null;
     }
 
     @Override

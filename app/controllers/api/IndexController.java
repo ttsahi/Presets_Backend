@@ -1,7 +1,6 @@
 package controllers.api;
 
 import com.google.inject.Inject;
-import data.pub.entities.tiles.IFile;
 import data.pub.reposotories.ITilesRepository;
 import data.pub.reposotories.IWorkspacesRepository;
 import play.libs.Json;
@@ -36,10 +35,10 @@ public class IndexController extends Controller {
         //this.tilesRepository.addFile("5472f065e47f66275755893a", "C:/a.txt", 3);
         //this.tilesRepository.addMap("5472f065e47f66275755893a", "gggg", 2);
 
-        IFile file = (IFile)this.tilesRepository.findById("5472f065e47f66275755893a","5472f098e47f66275755893b");
-        file.setPosition(2);
-        file.setPath("D:/b.txt");
-        this.tilesRepository.update("5472f065e47f66275755893a", file);
+        //IFile file = (IFile)this.tilesRepository.findById("5472f065e47f66275755893a","5472f098e47f66275755893b");
+        //file.setPosition(2);
+        //file.setPath("D:/b.txt");
+        //this.tilesRepository.update("5472f065e47f66275755893a", file);
 
         return ok(Json.toJson(this.workspacesRepo.findAll()));
     }

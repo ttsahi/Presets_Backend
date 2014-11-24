@@ -28,7 +28,8 @@ public class WorkspacesRepository implements IWorkspacesRepository {
     @Override
     public List<IWorkspace> findAll() {
         List<IWorkspace> workspaces = new ArrayList<>();
-        this.collection.find().as(Workspace.class).forEach(workspaces::add);
+        this.collection.find().projection("{_id: 1, _class: 1, name: 1}")
+                .as(Workspace.class).forEach(workspaces::add);
         return workspaces;
     }
 
@@ -38,8 +39,29 @@ public class WorkspacesRepository implements IWorkspacesRepository {
     }
 
     @Override
-    public boolean add(String name, String description, Date expired) {
-        return this.collection.save(new Workspace(name, description, new Date(), expired)).getN() != 0;
+    public String add(String name, String description, Date expired) {
+        Workspace workspace = new Workspace(name, description, new Date(), expired);
+        this.collection.save(workspace);
+        return workspace.getId();
+    }
+
+    @Override
+    public boolean updateName(String id, String name) {
+        return this.collection.update(new ObjectId(id))
+                .with("{$set: {name: #}}", name).getN() != 0;
+    }
+
+    @Override
+    public boolean updateDescription(String id, String description) {
+        return this.collection.update(new ObjectId(id))
+                .with("{$set: {description: #}}", description).getN() != 0;
+    }
+
+    @Override
+    public boolean update(String id, String name, String description) {
+        return this.collection.update(new ObjectId(id))
+                .with("{$set: {name: #, description: #}}", name, description)
+                .getN() != 0;
     }
 
     @Override

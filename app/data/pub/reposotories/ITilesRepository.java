@@ -10,10 +10,10 @@ import java.util.List;
 public interface ITilesRepository {
     ITile findById(String workspaceId, String tileId);
     List<ITile> findByWorkspace(String workspaceId);
-    boolean addFile(String workspaceId, String path, int position);
-    boolean addWebPage(String workspaceId, String url, int position);
-    boolean addWorkspaceDescriptor(String workspaceId, int position);
-    boolean addMap(String workspaceId, String name, int position);
+    String addFile(String workspaceId, String path, int position);
+    String addWebPage(String workspaceId, String url, int position);
+    String addWorkspaceDescriptor(String workspaceId, int position);
+    String addMap(String workspaceId, String name, int position);
     boolean update(String workspaceId, ITile tile);
     boolean remove(String workspaceId, String tileId);
 }
