@@ -119,18 +119,13 @@ public class WorkspacesController extends Controller {
 
             UpdateWorkspaceIModel updateModel = model.get();
 
-            if(updateModel.getName() != null && updateModel.getDescription() == null){
-                if(!this.workspacesRepo.updateName(updateModel.getId(), updateModel.getName())){
-                    return badRequest(Json.toJson(new String[]{"Server error!", "Can't update!"}));
-                }
-            }else if(updateModel.getName() == null && updateModel.getDescription() != null){
-                if(!this.workspacesRepo.updateDescription(updateModel.getId(), updateModel.getDescription())){
-                    return badRequest(Json.toJson(new String[]{"Server error!", "Can't update!"}));
-                }
-            }else {
-                if(!this.workspacesRepo.update(updateModel.getId(), updateModel.getName(), updateModel.getDescription())){
-                    return badRequest(Json.toJson(new String[]{"Server error!", "Can't update!"}));
-                }
+            if(!this.workspacesRepo.update(
+                    updateModel.getId(),
+                    updateModel.getName(),
+                    updateModel.getDescription(),
+                    updateModel.getExpired() != null ? new Date(updateModel.getExpired()) : null))
+            {
+                return badRequest(Json.toJson(new String[]{"Server error!", "Can't update!"}));
             }
 
             return ok("Workspace successfully updated!");

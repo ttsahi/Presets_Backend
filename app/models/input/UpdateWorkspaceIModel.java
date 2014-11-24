@@ -19,6 +19,7 @@ public class UpdateWorkspaceIModel {
     @MaxLength(50)
     private String description;
 
+    private Long expired;
 
     public String getId() {
         return id;
@@ -42,5 +43,13 @@ public class UpdateWorkspaceIModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getExpired() {
+        return expired;
+    }
+
+    public void setExpired(long expired) {
+        this.expired = expired;
     }
 }

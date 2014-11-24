@@ -46,22 +46,50 @@ public class WorkspacesRepository implements IWorkspacesRepository {
     }
 
     @Override
-    public boolean updateName(String id, String name) {
-        return this.collection.update(new ObjectId(id))
-                .with("{$set: {name: #}}", name).getN() != 0;
-    }
+    public boolean update(String id, String name, String description, Date expired) {
+        if(name != null && description == null && expired == null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {name: #}}", name)
+                    .getN() != 0;
+        }
 
-    @Override
-    public boolean updateDescription(String id, String description) {
-        return this.collection.update(new ObjectId(id))
-                .with("{$set: {description: #}}", description).getN() != 0;
-    }
+        if(name != null && description != null && expired == null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {name: #, description: #}}", name, description)
+                    .getN() != 0;
+        }
 
-    @Override
-    public boolean update(String id, String name, String description) {
-        return this.collection.update(new ObjectId(id))
-                .with("{$set: {name: #, description: #}}", name, description)
-                .getN() != 0;
+        if(name != null && description == null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {name: #, expired: #}}", name, expired)
+                    .getN() != 0;
+        }
+
+        if(name != null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {name: #, description: #, expired: #}}", name, description, expired)
+                    .getN() != 0;
+        }
+
+        if(description != null && expired == null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {description: #}}", description)
+                    .getN() != 0;
+        }
+
+        if(description != null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {description: #, expired: #}}", description, expired)
+                    .getN() != 0;
+        }
+
+        if(expired != null){
+            return this.collection.update(new ObjectId(id))
+                    .with("{$set: {expired: #}}", expired)
+                    .getN() != 0;
+        }
+
+        return false;
     }
 
     @Override
